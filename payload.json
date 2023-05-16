@@ -1,0 +1,12 @@
+{
+    "table": "A",
+    "currency": "dolar amerykański",
+    "code": "USD",
+    "rates": [
+        {
+            "no": "220/A/NBP/2020",
+            "effectiveDate": "2020-11-10",
+            "mid": 3.8168
+        }
+    ]
+}
