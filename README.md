@@ -1,3 +1,49 @@
-# dividend-tax-calculator
+# Dividend Tax Calculator
+<img src="https://github.com/hshukur/dividend-tax-calculator/blob/master/app_gui.png" alt="Alt text" width=500 title="Optional title">
 
-# test text
+Please make sure to read this before using the application.
+
+## What is this tool?
+This tool can help to calculate the amonut of tax you need to pay as a tax resident of Poland for dividends received from stocks owned in United States of America.
+
+## Installation process
+### Prerequisites
+Make sure you have Python and Git installted on your laptop or PC.
+* Installing Python: https://www.python.org/downloads/
+* Installing GIt: https://github.com/git-guides/install-git
+
+**Step 1.** Open a command prompt on your laptop or PC.
+
+**Step 2.** Clone the repository using Git by running the following command:
+```bash
+git clone https://github.com/hshukur/dividend-tax-calculator
+```
+
+**Step 3.** Change into the project directory using the cd command:
+```bash
+cd dividend-tax-calculator/
+```
+
+**Step 4.** Install the required Python packages:
+```bash
+pip install -r requirements.txt
+```
+
+**Step 5.** Now you can run the application using the following command:
+```bash
+python main.py
+```
+
+## Is my data being sent somewhere?
+No, The data you provide is processed locally and not being sent anywhere.
+  
+## Important Notice
+The tax calculator tool assumes that you have a valid W-8BEN form submitted.
+
+The tool is intended for informational purposes only and should not be considered a substitute for professional tax advice.
+
+Tax laws and regulations can vary by jurisdiction and may change over time. 
+
+By using this tax calculator tool, you acknowledge and agree that the author(s) and contributors are not responsible for any consequences, losses, or damages resulting from the use of the tool.
+
+Please use this tax calculator tool responsibly and seek professional advice when needed.
