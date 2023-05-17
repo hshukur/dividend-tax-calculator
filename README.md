@@ -1,3 +1,6 @@
+[![License: MIT](https://img.shields.io/badge/License-MIT-brightgreen.svg)](https://opensource.org/licenses/MIT) [![linting: pylint](https://img.shields.io/badge/linting-pylint-yellowgreen)](https://github.com/pylint-dev/pylint) [![Linkedin: hatamshukur](https://img.shields.io/badge/LinkedIn-informational?logo=linkedin)](https://www.linkedin.com/in/hatamshukur/)
+
+
 # Dividend Tax Calculator
 <img src="https://github.com/hshukur/dividend-tax-calculator/blob/master/app_gui.png" alt="Alt text" width=500 title="Optional title">
 
@@ -34,8 +37,22 @@ pip install -r requirements.txt
 python main.py
 ```
 
+## How is tax being calculated?
+The tax calculator tool assumes that you have a valid W-8BEN form submitted.
+
+Which means that you are already paying 15% tax in USA and only need to pay the 4% tax in Poland.
+
+Here is the logic that the tool uses:
+1. Calculate 4% of each dividend amount specified
+2. Calculate a day prior the specified transaction date
+3. Get the USD FX rate from NBP (National Bank of Poland) for the date calculated in step 2
+    - If there is no information present on NBP for that day (i.e. non-business day), go back to step 2.
+5. Calculate the overall tax amount and tax amount for each entry
+
+
+
 ## Is my data being sent somewhere?
-No, The data you provide is processed locally and not being sent anywhere.
+No, the data you provide is processed locally and not being sent anywhere.
   
 ## Important Notice
 The tax calculator tool assumes that you have a valid W-8BEN form submitted.
