@@ -68,10 +68,10 @@ def submit_btn_clicked():
             tkinter.messagebox.showwarning("Error", "The data provided is not valid")
         else:
             # calculate 15%
-            fifteen_percent_tax = round(float(div_amount) * 0.15, 2)
+            fifteen_percent_tax = float(div_amount) * 0.15
 
             # calculate 4%
-            four_percent_tax = round(float(div_amount) * 0.04, 2)
+            four_percent_tax = float(div_amount) * 0.04
 
             # get FX rate
             data_proc = DataProcessor(transaction_date)
