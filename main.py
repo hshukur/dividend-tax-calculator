@@ -52,9 +52,11 @@ def submit_btn_clicked():
     """
     indexer = 0
     sum_gain = 0
+    sum_total_tax = 0
     sum_tax_paid = 0
     sum_tax_to_be_paid = 0
-    final_text_to_be_displayed = ""
+    final_text_to_be_displayed = "Amounts shown are in PLN\n" \
+                                 "Per entry calculation:\n"
     for each_key in dictionary_for_widgets:
         # extracting values from the dictionary
         # the index values are [2] and [5] here to extract Entry widgets from the list
@@ -67,6 +69,9 @@ def submit_btn_clicked():
         if value_checker.check_div_amount() or value_checker.check_txn_date():
             tkinter.messagebox.showwarning("Error", "The data provided is not valid")
         else:
+            # calculate 19%
+            nineteen_percent_tax = float(div_amount) * 0.19
+
             # calculate 15%
             fifteen_percent_tax = float(div_amount) * 0.15
 
@@ -80,6 +85,9 @@ def submit_btn_clicked():
             # calculate gain in PLN
             gain_per_entry = round((float(div_amount) * usd_fx_rate), 2)
 
+            # calculate 19% in PLN
+            total_tax_per_entry = round((nineteen_percent_tax * usd_fx_rate), 2)
+
             # calculate 15% in PLN
             tax_paid_per_entry = round((fifteen_percent_tax * usd_fx_rate), 2)
 
@@ -87,14 +95,16 @@ def submit_btn_clicked():
             tax_to_be_paid_per_entry = round((four_percent_tax * usd_fx_rate), 2)
 
             # text entry for each row
-            tax_amount_per_entry = f"Entry {row_number}:  " \
-                                   f"Gain: {gain_per_entry} PLN  |  " \
-                                   f"Tax paid in USA {tax_paid_per_entry} PLN  |  " \
-                                   f"Tax to be paid {tax_to_be_paid_per_entry} PLN\n"
+            tax_amount_per_entry = f"{row_number}. " \
+                                   f"Gain: {gain_per_entry:.2f}  |  " \
+                                   f"Total tax: {total_tax_per_entry:.2f}  |  " \
+                                   f"Tax paid in USA {tax_paid_per_entry:.2f}  |  " \
+                                   f"Tax to be paid {tax_to_be_paid_per_entry:.2f}\n"
             final_text_to_be_displayed += tax_amount_per_entry
 
             # accumulating the tax value and text
             sum_gain += gain_per_entry
+            sum_total_tax += total_tax_per_entry
             sum_tax_paid += tax_paid_per_entry
             sum_tax_to_be_paid += tax_to_be_paid_per_entry
 
@@ -104,13 +114,13 @@ def submit_btn_clicked():
     # the sum_tax_to_be_paid can be zero if ValueError is triggered
     if sum_tax_to_be_paid != 0:
         sum_tax_text = f"\nTotal calculation:\n" \
-                       f"Gain: {round(sum_gain, 2)} PLN  |  " \
-                       f"Tax paid in USA {round(sum_tax_paid, 2)} PLN  |  " \
-                       f"Tax to be paid {round(sum_tax_to_be_paid, 2)} PLN\n"
+                       f"Gain: {round(sum_gain, 2)}  |  " \
+                       f"Tax paid in USA {round(sum_tax_paid, 2)}  |  " \
+                       f"Tax to be paid {round(sum_tax_to_be_paid, 2)}\n"
         final_text_to_be_displayed += sum_tax_text
 
         # putting the final text into the widget
-        result_widget = tkinter.Text(fifth_frame, height=8, width=65, font=(FONT_TYPE, 9), padx=8, pady=5, bg=BG_COLOR)
+        result_widget = tkinter.Text(fifth_frame, height=10, width=70, font=(FONT_TYPE, 9), padx=8, pady=5, bg=BG_COLOR)
         result_widget.insert(tkinter.END, final_text_to_be_displayed)
         result_widget.config(state="disabled")
         result_widget.grid(column=0, row=indexer + 1)
