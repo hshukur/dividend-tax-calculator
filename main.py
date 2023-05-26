@@ -10,6 +10,8 @@ from data_processing import DataProcessor
 FONT_TYPE = "Verdana"
 BG_COLOR = "#FCFCFC"
 
+# test change
+
 # root window setup
 root = ThemedTk(theme="breeze")
 root.title("Dividend Tax Calculator")
