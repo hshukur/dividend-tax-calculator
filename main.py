@@ -55,7 +55,7 @@ def submit_btn_clicked():
     sum_total_tax = 0
     sum_tax_paid = 0
     sum_tax_to_be_paid = 0
-    final_text_to_be_displayed = "Amounts shown are in PLN\n" \
+    final_text_to_be_displayed = "Amounts shown are in PLN\n\n" \
                                  "Per entry calculation:\n"
     for each_key in dictionary_for_widgets:
         # extracting values from the dictionary
@@ -115,6 +115,7 @@ def submit_btn_clicked():
     if sum_tax_to_be_paid != 0:
         sum_tax_text = f"\nTotal calculation:\n" \
                        f"Gain: {round(sum_gain, 2)}  |  " \
+                       f"Total tax: {round(sum_total_tax, 2)}  |  " \
                        f"Tax paid in USA {round(sum_tax_paid, 2)}  |  " \
                        f"Tax to be paid {round(sum_tax_to_be_paid, 2)}\n"
         final_text_to_be_displayed += sum_tax_text
