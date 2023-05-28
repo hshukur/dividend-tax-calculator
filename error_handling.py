@@ -19,9 +19,9 @@ class ErrorChecker:
          Check if the uses provided a valid transaction date
 
      """
-    def __init__(self, number, date):
+    def __init__(self, number=10.0, year="2022"):
         self.number = number
-        self.date = date
+        self.year = year
 
     def check_div_amount(self):
         """
@@ -41,21 +41,24 @@ class ErrorChecker:
             return True
         return False
 
-    def check_txn_date(self):
+    def check_year(self):
         """
-        Check if the uses provided a valid transaction dates
+        Check if the uses provided a valid year information
 
         Returns
         -------
         bool
-            True if the date is not valid or earlier than 2 January 2002
+            True if the number is not a valid year, or it is before 2011
             False otherwise
         """
-        split_list = self.date.split("-")
         try:
-            expected_date = datetime.date(int(split_list[0]), int(split_list[1]), int(split_list[2]))
-        except (ValueError, IndexError):
+            int(self.year)
+        except ValueError:
             return True
-        if expected_date < datetime.date(2002, 1, 2):
+        if len(self.year) != 4:
+            return True
+        if int(self.year) < 2011:
+            return True
+        if int(self.year) > datetime.datetime.now().year:
             return True
         return False

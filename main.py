@@ -37,12 +37,91 @@ welcome_label = tkinter.Label(first_frame, text=welcome_text, font=(FONT_TYPE, 1
 welcome_label.grid(column=0, row=0)
 
 # configuration of the second frame
-div_number_text = "Please select how many times have you received: "
-div_number_label = tkinter.Label(second_frame, text=div_number_text, font=(FONT_TYPE, 12), width=42)
+div_number_text = "Which year do you want to calculate the tax for?"
+div_number_label = tkinter.Label(second_frame, text=div_number_text, font=(FONT_TYPE, 12), width=40)
 div_number_label.grid(column=0, row=0, padx=5)
+
+# tax year entry
+div_year = ttk.Entry(second_frame, width=5, font=(FONT_TYPE, 10))
+div_year.insert(tkinter.END, string="YYYY")
+div_year.grid(column=1, row=0, padx=5)
 
 # this dictionary is used to store and access widgets of the third frame
 dictionary_for_widgets = {}
+
+def save_btn_clicked():
+    # dividends information label
+    div_data_req_text = "Please provide information here:"
+    div_data_req_label = ttk.Label(third_frame, text=div_data_req_text, font=(FONT_TYPE, 12))
+    div_data_req_label.grid(column=0, row=0, columnspan=6, pady=8)
+
+    row_number = 1
+
+    # checking if dictionary is empty or not
+    if bool(dictionary_for_widgets):
+        for each_key in dictionary_for_widgets.copy():
+            for each_index in range(len(dictionary_for_widgets[each_key])):
+                dictionary_for_widgets[each_key][each_index].destroy()
+            dictionary_for_widgets.pop(each_key)
+
+    # removes widgets from fifth_frame to refresh the window
+    for each_wid in fifth_frame.winfo_children():
+        each_wid.destroy()
+
+    value_checker = ErrorChecker(year=div_year.get())
+    if value_checker.check_year():
+        tkinter.messagebox.showwarning("Error", "The data provided is not valid")
+    else:
+        # initializes the necessary amount of rows with widgets based on the year provided
+        data_proc_new = DataProcessor(div_year.get())
+        list_for_this_year = data_proc_new.get_div_payment_dates()
+
+        # setting up the rows and entries
+        indexer = len(list_for_this_year)
+        for each in range(indexer - 1, -1, -1):
+            list_for_widgets = []
+
+            # row number label
+            row_num_label = ttk.Label(third_frame, text=f"{row_number}.", font=(FONT_TYPE, 10))
+            row_num_label.grid(column=0, row=row_number, padx=2, pady=6)
+            list_for_widgets.append(row_num_label)
+
+            # dividend amount label
+            div_amount_label = ttk.Label(third_frame, text="Dividend amount in USD", font=(FONT_TYPE, 10))
+            div_amount_label.grid(column=1, row=row_number, padx=3)
+            list_for_widgets.append(div_amount_label)
+
+            # dividend amount entry
+            div_amount_entry = ttk.Entry(third_frame, width=6,font=(FONT_TYPE, 10))
+            div_amount_entry.insert(tkinter.END, string="10.0")
+            div_amount_entry.grid(column=2, row=row_number)
+            list_for_widgets.append(div_amount_entry)
+
+            # space label
+            space_label = ttk.Label(third_frame, text="   ", font=(FONT_TYPE, 10))
+            space_label.grid(column=3, row=row_number)
+            list_for_widgets.append(space_label)
+
+            # transaction date label
+            txn_date_label = ttk.Label(third_frame, text="Transaction date:", font=(FONT_TYPE, 10))
+            txn_date_label.grid(column=4, row=row_number, padx=3)
+            list_for_widgets.append(txn_date_label)
+
+            # transaction date entry
+            txn_date_entry = ttk.Label(third_frame, text="-".join(list_for_this_year[each]), width=12, font=(FONT_TYPE, 10))
+            txn_date_entry.grid(column=5, row=row_number)
+
+            list_for_widgets.append(txn_date_entry)
+
+            # adding each row as a key:value pair to dictionary_for_widgets
+            dictionary_for_widgets[row_number] = list_for_widgets
+
+            # next row
+            row_number += 1
+
+        # submit button
+        submit_button = ttk.Button(forth_frame, text="Submit", command=submit_btn_clicked)
+        submit_button.grid(column=0, row=0)
 
 def submit_btn_clicked():
     """
@@ -60,13 +139,14 @@ def submit_btn_clicked():
     for each_key in dictionary_for_widgets:
         # extracting values from the dictionary
         # the index values are [2] and [5] here to extract Entry widgets from the list
+
         row_number = list(dictionary_for_widgets.keys())[indexer]
         div_amount = dictionary_for_widgets[each_key][2].get()
-        transaction_date = dictionary_for_widgets[each_key][5].get()
+        transaction_date = dictionary_for_widgets[each_key][5].cget("text")
 
         # error-check
-        value_checker = ErrorChecker(div_amount, transaction_date)
-        if value_checker.check_div_amount() or value_checker.check_txn_date():
+        value_checker = ErrorChecker(number=div_amount)
+        if value_checker.check_div_amount():
             tkinter.messagebox.showwarning("Error", "The data provided is not valid")
         else:
             # calculate 19%
@@ -126,91 +206,7 @@ def submit_btn_clicked():
         result_widget.config(state="disabled")
         result_widget.grid(column=0, row=indexer + 1)
 
-def rdb_used():
-    """
-    Invoked when new_rdb_1, new_rdb_2, new_rdb_3, or new_rdb_4 is selected
-    Checks if there are already widgets in third_frame
-    There might be widgets already in third_frame if the radiobutton selection changes
-        If any widget is present at the time of selection, destroys everything
-    """
-    # getting the value of the radiobutton selected
-    selected_rdb = new_rdb_state.get()
-
-    # dividends information label
-    div_data_req_text = "Please provide information here:"
-    div_data_req_label = ttk.Label(third_frame, text=div_data_req_text, font=(FONT_TYPE, 12))
-    div_data_req_label.grid(column=0, row=0, columnspan=6, pady=8)
-
-    row_number = 1
-
-    # checking if dictionary is empty or not
-    if bool(dictionary_for_widgets):
-        for each_key in dictionary_for_widgets.copy():
-            for each_index in range(len(dictionary_for_widgets[each_key])):
-                dictionary_for_widgets[each_key][each_index].destroy()
-            dictionary_for_widgets.pop(each_key)
-
-    # removes widgets from fifth_frame to refresh the window
-    for each_wid in fifth_frame.winfo_children():
-        each_wid.destroy()
-
-    # initializes the nesessary amount of rows with widgets based on radiobutton selection
-    for each in range(1, selected_rdb + 1):
-        # a list to store all widgets within each row
-        list_for_widgets = []
-
-        # row number label
-        row_num_label = ttk.Label(third_frame, text=f"{each}.", font=(FONT_TYPE, 10))
-        row_num_label.grid(column=0, row=row_number, padx=2, pady=6)
-        list_for_widgets.append(row_num_label)
-
-        # dividend amount label
-        div_amount_label = ttk.Label(third_frame, text="Dividend amount in USD", font=(FONT_TYPE, 10))
-        div_amount_label.grid(column=1, row=row_number, padx=3)
-        list_for_widgets.append(div_amount_label)
-
-        # dividend amount entry
-        div_amount_entry = ttk.Entry(third_frame, width=6, font=(FONT_TYPE, 10))
-        div_amount_entry.insert(tkinter.END, string="10.0")
-        div_amount_entry.grid(column=2, row=row_number)
-        list_for_widgets.append(div_amount_entry)
-
-        # space label
-        space_label = ttk.Label(third_frame, text="   ", font=(FONT_TYPE, 10))
-        space_label.grid(column=3, row=row_number)
-        list_for_widgets.append(space_label)
-
-        # transaction date label
-        txn_date_label = ttk.Label(third_frame, text="Transaction date", font=(FONT_TYPE, 10))
-        txn_date_label.grid(column=4, row=row_number, padx=3)
-        list_for_widgets.append(txn_date_label)
-
-        # transaction date entry
-        txn_date_entry = ttk.Entry(third_frame, width=20, font=(FONT_TYPE, 10))
-        txn_date_entry.insert(tkinter.END, string="YYYY-MM-DD format")
-        txn_date_entry.grid(column=5, row=row_number)
-        list_for_widgets.append(txn_date_entry)
-
-        # adding each row as a key:value pair to dictionary_for_widgets
-        dictionary_for_widgets[each] = list_for_widgets
-
-        # next row
-        row_number += 1
-
-    # submit button
-    submit_button = ttk.Button(forth_frame, text="Submit", command=submit_btn_clicked)
-    submit_button.grid(column=0, row=0)
-
-# setting up radiobuttons
-new_rdb_state = tkinter.IntVar()
-new_rdb_1 = ttk.Radiobutton(second_frame, text="1", value=1, variable=new_rdb_state, command=rdb_used)
-new_rdb_2 = ttk.Radiobutton(second_frame, text="2", value=2, variable=new_rdb_state, command=rdb_used)
-new_rdb_3 = ttk.Radiobutton(second_frame, text="3", value=3, variable=new_rdb_state, command=rdb_used)
-new_rdb_4 = ttk.Radiobutton(second_frame, text="4", value=4, variable=new_rdb_state, command=rdb_used)
-new_rdb_1.grid(column=1, row=0, pady=5)
-new_rdb_2.grid(column=2, row=0, pady=5)
-new_rdb_3.grid(column=3, row=0, pady=5)
-new_rdb_4.grid(column=4, row=0, pady=5)
-
+save_button = ttk.Button(second_frame, text="Save", command=save_btn_clicked, width=4)
+save_button.grid(column=2, row=0, padx=5)
 
 root.mainloop()
