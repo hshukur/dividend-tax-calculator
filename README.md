@@ -42,14 +42,19 @@ The tax calculator tool assumes that you have a valid W-8BEN form submitted.
 
 Which means that you are already paying 15% tax in USA and only need to pay the 4% tax in Poland.
 
-Here is the logic that the tool uses:
-1. Calculate 4% of each dividend amount specified
+When you specify a year you want to calculate the tax for, 
+the tool goes to [Investor Relations](https://investor.cisco.com/stock-information/dividends-and-splits/default.aspx)
+and checks how many times dividends were paid that year and what was the payment date.
+
+After that's done the user is asked to provide the amount of dividends they received for each payment date.
+
+Once the submit button is clicked, this logic is used:
+1. Calculate 19%, 15%, 4% of each dividend amount specified
 2. Calculate a day prior the specified transaction date
 3. Get the USD FX rate from NBP (National Bank of Poland) for the date calculated in step 2
     - If there is no information present on NBP for that day (i.e. non-business day), go back to step 2.
-5. Calculate the overall tax amount and tax amount for each entry
-
-
+5. Calculate the gain, total tax, tax paid in the USA, and tax to be paid in Poland.
+6. Present the data for each entry and in total
 
 ## Is my data being sent somewhere?
 No, the data you provide is processed locally and not being sent anywhere.
