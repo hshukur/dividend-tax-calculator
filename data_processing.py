@@ -60,14 +60,6 @@ class DataProcessor:
                 self.div_payment_data[year] = [[year, month, day]]
         return self.div_payment_data[self.provided_date]
 
-    # def get_specific_year_data(self):
-    #
-    #     print(self.final_dictionary)
-    #     b = self.final_dictionary[self.provided_date]
-    #     print(b)
-    #
-    #     return b
-
     def increase_delta_by_one(self):
         """
         Increases self.delta by one

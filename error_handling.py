@@ -19,7 +19,7 @@ class ErrorChecker:
          Check if the uses provided a valid transaction date
 
      """
-    def __init__(self, number, year):
+    def __init__(self, number=10.0, year="2022"):
         self.number = number
         self.year = year
 
@@ -42,6 +42,15 @@ class ErrorChecker:
         return False
 
     def check_year(self):
+        """
+        Check if the uses provided a valid year information
+
+        Returns
+        -------
+        bool
+            True if the number is not a valid year, or it is before 2011
+            False otherwise
+        """
         try:
             int(self.year)
         except ValueError:
@@ -49,5 +58,7 @@ class ErrorChecker:
         if len(self.year) != 4:
             return True
         if int(self.year) < 2011:
+            return True
+        if int(self.year) > datetime.datetime.now().year:
             return True
         return False

@@ -68,7 +68,7 @@ def save_btn_clicked():
     for each_wid in fifth_frame.winfo_children():
         each_wid.destroy()
 
-    value_checker = ErrorChecker(0, div_year.get())
+    value_checker = ErrorChecker(year=div_year.get())
     if value_checker.check_year():
         tkinter.messagebox.showwarning("Error", "The data provided is not valid")
     else:
@@ -145,7 +145,7 @@ def submit_btn_clicked():
         transaction_date = dictionary_for_widgets[each_key][5].cget("text")
 
         # error-check
-        value_checker = ErrorChecker(div_amount, transaction_date)
+        value_checker = ErrorChecker(number=div_amount)
         if value_checker.check_div_amount():
             tkinter.messagebox.showwarning("Error", "The data provided is not valid")
         else:
@@ -210,4 +210,3 @@ save_button = ttk.Button(second_frame, text="Save", command=save_btn_clicked, wi
 save_button.grid(column=2, row=0, padx=5)
 
 root.mainloop()
-
