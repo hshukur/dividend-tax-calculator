@@ -37,8 +37,8 @@ welcome_label = tkinter.Label(first_frame, text=welcome_text, font=(FONT_TYPE, 1
 welcome_label.grid(column=0, row=0)
 
 # configuration of the second frame
-div_number_text = "Which year do you want to calculate tax for?"
-div_number_label = tkinter.Label(second_frame, text=div_number_text, font=(FONT_TYPE, 12), width=37)
+div_number_text = "Which year do you want to calculate the tax for?"
+div_number_label = tkinter.Label(second_frame, text=div_number_text, font=(FONT_TYPE, 12), width=40)
 div_number_label.grid(column=0, row=0, padx=5)
 
 # tax year entry
