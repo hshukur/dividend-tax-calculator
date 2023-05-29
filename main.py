@@ -172,7 +172,8 @@ def submit_btn_clicked():
             tax_paid_per_entry = round((fifteen_percent_tax * usd_fx_rate), 2)
 
             # calculate 4% in PLN
-            tax_to_be_paid_per_entry = round((four_percent_tax * usd_fx_rate), 2)
+            # tax_to_be_paid_per_entry = round((four_percent_tax * usd_fx_rate), 2)
+            tax_to_be_paid_per_entry = round((total_tax_per_entry - tax_paid_per_entry), 2)
 
             # text entry for each row
             tax_amount_per_entry = f"{row_number}. " \
