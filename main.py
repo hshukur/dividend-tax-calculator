@@ -47,7 +47,7 @@ div_year.insert(tkinter.END, string="YYYY")
 div_year.grid(column=1, row=0, padx=5)
 
 # this dictionary is used to store and access widgets of the third frame
-dictionary_for_widgets = {}
+dictionary_for_third_frame_widgets = {}
 
 def save_btn_clicked():
     # dividends information label
@@ -58,11 +58,11 @@ def save_btn_clicked():
     row_number = 1
 
     # checking if dictionary is empty or not
-    if bool(dictionary_for_widgets):
-        for each_key in dictionary_for_widgets.copy():
-            for each_index in range(len(dictionary_for_widgets[each_key])):
-                dictionary_for_widgets[each_key][each_index].destroy()
-            dictionary_for_widgets.pop(each_key)
+    if bool(dictionary_for_third_frame_widgets):
+        for each_key in dictionary_for_third_frame_widgets.copy():
+            for each_index in range(len(dictionary_for_third_frame_widgets[each_key])):
+                dictionary_for_third_frame_widgets[each_key][each_index].destroy()
+            dictionary_for_third_frame_widgets.pop(each_key)
 
     # removes widgets from fifth_frame to refresh the window
     for each_wid in fifth_frame.winfo_children():
@@ -114,7 +114,7 @@ def save_btn_clicked():
             list_for_widgets.append(txn_date_entry)
 
             # adding each row as a key:value pair to dictionary_for_widgets
-            dictionary_for_widgets[row_number] = list_for_widgets
+            dictionary_for_third_frame_widgets[row_number] = list_for_widgets
 
             # next row
             row_number += 1
@@ -134,20 +134,23 @@ def submit_btn_clicked():
     sum_total_tax = 0
     sum_tax_paid = 0
     sum_tax_to_be_paid = 0
+    is_error_triggered = False
     final_text_to_be_displayed = "Amounts shown are in PLN\n\n" \
                                  "Per entry calculation:\n"
-    for each_key in dictionary_for_widgets:
+    for each_key in dictionary_for_third_frame_widgets:
         # extracting values from the dictionary
         # the index values are [2] and [5] here to extract Entry widgets from the list
 
-        row_number = list(dictionary_for_widgets.keys())[indexer]
-        div_amount = dictionary_for_widgets[each_key][2].get()
-        transaction_date = dictionary_for_widgets[each_key][5].cget("text")
+        row_number = list(dictionary_for_third_frame_widgets.keys())[indexer]
+        div_amount = dictionary_for_third_frame_widgets[each_key][2].get()
+        transaction_date = dictionary_for_third_frame_widgets[each_key][5].cget("text")
 
         # error-check
         value_checker = ErrorChecker(number=div_amount)
         if value_checker.check_div_amount():
             tkinter.messagebox.showwarning("Error", "The data provided is not valid")
+            # setting this variable to True so nothing gets printed if there was an error
+            is_error_triggered = True
         else:
             # calculate 19%
             nineteen_percent_tax = float(div_amount) * 0.19
@@ -205,7 +208,11 @@ def submit_btn_clicked():
         result_widget = tkinter.Text(fifth_frame, height=10, width=70, font=(FONT_TYPE, 9), padx=8, pady=5, bg=BG_COLOR)
         result_widget.insert(tkinter.END, final_text_to_be_displayed)
         result_widget.config(state="disabled")
-        result_widget.grid(column=0, row=indexer + 1)
+        # if error was triggered, do not put the widget to the layout
+        if is_error_triggered:
+            pass
+        else:
+            result_widget.grid(column=0, row=indexer + 1)
 
 save_button = ttk.Button(second_frame, text="Save", command=save_btn_clicked, width=4)
 save_button.grid(column=2, row=0, padx=5)
