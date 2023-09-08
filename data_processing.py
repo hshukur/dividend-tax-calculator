@@ -124,7 +124,7 @@ class DataProcessor:
 
         if data_from_nbp.status_code == 400:
             # print(data_from_nbp.status_code)
-            return 400
+            return 0
         if data_from_nbp.status_code == 404:
             # print(data_from_nbp.status_code)
             while recv_404:
