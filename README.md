@@ -7,7 +7,7 @@
 Please make sure to read this before using the application.
 
 ## What is this tool?
-This tool can help to calculate the amonut of tax you need to pay as a tax resident of Poland for dividends received from stocks owned in United States of America.
+This tool can help to calculate the amount of tax you need to pay as a tax resident of Poland for dividends received from stocks owned in United States of America.
 
 ## Installation process
 ### Prerequisites
