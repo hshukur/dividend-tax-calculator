@@ -37,7 +37,7 @@ class ErrorChecker:
             float(self.number)
         except ValueError:
             return True
-        if float(self.number) <= 0:
+        if float(self.number) < 0:
             return True
         return False
 
